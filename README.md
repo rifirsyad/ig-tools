@@ -81,7 +81,7 @@ $ [License](#license)
 	$ npm install https://github.com/huttarichard/instagram-private-api
 	$ npm audit fix
 	$ ls
-	$ Then select the tool you want to use!
+	* Then select the tool you want to use!
 	$ node ((filename))
 <br/>
 
