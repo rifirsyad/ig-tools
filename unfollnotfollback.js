@@ -1,3 +1,9 @@
+'use strict'
+
+// Recode by officialputuid
+// Last modified by I Putu Jaya Adi Pranata (officialputuid) on March 30, 2019
+// fb|ig|twitter|gplus|line|github|behance|medium? officialputuid & https://officialputu.id
+
 const Client = require('instagram-private-api').V1;
 const delay = require('delay');
 const chalk = require('chalk');
@@ -9,7 +15,7 @@ const User = [
 {
 	type:'input',
 	name:'username',
-	message:'[>] Insert Username:',
+	message:'Insert Username:',
 	validate: function(value){
 		if(!value) return 'Can\'t Empty';
 		return true;
@@ -18,7 +24,7 @@ const User = [
 {
 	type:'password',
 	name:'password',
-	message:'[>] Insert Password:',
+	message:'Insert Password:',
 	mask:'*',
 	validate: function(value){
 		if(!value) return 'Can\'t Empty';
@@ -26,19 +32,19 @@ const User = [
 	}
 },
 {
-  type:'input',
-  name:'mysyntx',
-  message:'[>] Input Total of Target You Want (ITTYW):',
-  validate: function(value){
-    value = value.match(/[0-9]/);
-    if (value) return true;
-    return 'Use Number Only!';
-  }
+	type:'input',
+	name:'ittyw',
+	message:'Input Total of Target You Want (ITTYW):',
+	validate: function(value){
+		value = value.match(/[0-9]/);
+		if (value) return true;
+		return 'Use Number Only!';
+	}
 },
 {
 	type:'input',
 	name:'sleep',
-	message:'[>] Insert Sleep (MiliSeconds):',
+	message:'Insert Sleep (In MiliSeconds):',
 	validate: function(value){
 		value = value.match(/[0-9]/);
 		if (value) return true;
@@ -104,67 +110,55 @@ const Following = async function(session, id){
 const Unfollow = async function(session, accountId){
 	try {
 		await Client.Relationship.destroy(session, accountId);
-		return chalk`{bold.green SUKSES}`;
+		return chalk`{bold.green Success}`;
 	} catch (err){
-		return chalk`{bold.red GAGAL}`;
+		return chalk`{bold.red Failed}`;
 	}
 }
 
-const Excute = async function(User,sleep,mysyntx){
+const Excute = async function(User,sleep,ittyw){
 	try {
-		console.log(chalk`\n{yellow [?] Try to Login . . .}`);
+		console.log(chalk`\n{yellow ? Try to Login . . .}`);
 		const doLogin = await Login(User);
-		console.log(chalk`{green [!] Login Succsess}, {yellow [?] Try to get Followers and Following . . .}`);
+		console.log(chalk`{green ✓ Login Succsess. }{yellow ? Try to get list followers, following and unfollow . . .}`);
 		const task = [
 		Followers(doLogin.session, doLogin.account.id),
 		Following(doLogin.session, doLogin.account.id)
 		]
 		const [getFollowers, getFollowing] = await Promise.all(task);
-		console.log(chalk`{bold.green  | Followers : ${getFollowers.length}\n | Following : ${getFollowing.length}}`);
+		console.log(chalk`{green ! Successfully Get Data: {bold.cyan Followers: ${getFollowers.length}} » {bold.cyan Following: ${getFollowing.length}}}`);
 		var AccountToUnfollow = [];
 		await Promise.all(getFollowing.map(async(account) => {
 			if (!getFollowers.includes(account)) {
 				await AccountToUnfollow.push(account);
 			}
 		}));
-		console.log(chalk`{blue  | Account To Unfollow : ${AccountToUnfollow.length}}`)
-		AccountToUnfollow = _.chunk(AccountToUnfollow, mysyntx);
+		console.log(chalk`{green ! Success in Finding Value {bold.red Unfollow: ${AccountToUnfollow.length}}\n}`);
+		console.log(chalk`{yellow ≡ READY TO START UFNFB WITH RATIO ${ittyw} TARGET/${sleep} MiliSeconds\n}`);
+		AccountToUnfollow = _.chunk(AccountToUnfollow, ittyw);
 		for (let i = 0; i < AccountToUnfollow.length; i++) {
 			var timeNow = new Date();
 			timeNow = `${timeNow.getHours()}:${timeNow.getMinutes()}:${timeNow.getSeconds()}`
 			await Promise.all(AccountToUnfollow[i].map(async(akun) => {
 				const doUnfollow = await Unfollow(doLogin.session, akun);
-				console.log(chalk`[{magenta ${timeNow}}] Unfollow {blue [${akun}]} => ${doUnfollow}`);
+				console.log(chalk`{magenta ⌭ ${timeNow}}: @${akun} ➾ Unfollow ${doUnfollow}`);
 			}))
-			await console.log(chalk`{yellow \n [#][>] Delay For ${sleep} MiliSeconds [<][#] \n}`);
+			await console.log(chalk`{yellow \nϟ Current Account: {bold.green ${User.username}} » Delay: ${ittyw}/${sleep}ms\n}`);
 			await delay(sleep);
 		}
 	} catch(err) {
 		console.log(err);
 	}
 }
-
-console.log(chalk`
-  {bold.cyan
-  —————————————————— [INFORMATION] ————————————————————
-
-  [?] {bold.green UFNFB | Unfollow Not FollowBack!}
-
-  ——————————————————  [THANKS TO]  ————————————————————
-  [✓] CODE BY CYBER SCREAMER CCOCOT (ccocot@bc0de.net)
-  [✓] FIXING & TESTING BY SYNTAX (@officialputu_id)
-  [✓] CCOCOT.CO | BC0DE.NET | NAONLAH.NET | WingkoColi
-  [✓] SGB TEAM REBORN | Zerobyte.id | ccocot@bc0de.net 
-  —————————————————————————————————————————————————————
-  What's new?
-  1. Input Target/delay Manual (ITTYW)
-  —————————————————————————————————————————————————————}
+console.log(chalk`{bold.cyan
+  Ξ TITLE  : UNFB [UNFOLLOW NOT FOLLOWBACK INSTAGRAM]
+  Ξ CODE   : CYBER SCREAMER CCOCOT (ccocot@bc0de.net)
+  Ξ STATUS : {bold.green [+ITTWY]} & {bold.yellow [TESTED]}}
       `);
-
 inquirer.prompt(User)
 .then(answers => {
 	Excute({
 		username:answers.username,
 		password:answers.password
-	},answers.sleep,answers.mysyntx);
-})
+	},answers.sleep,answers.ittyw);
+});
