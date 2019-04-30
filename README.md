@@ -1,4 +1,4 @@
-# ![Image](instagram-icon-white.png) Instagram Tools (NODE JS API V1)
+# ![Image](instagram-icon-white.png) Instagram Tools
 
 * Instagram Tools Based on NodeJS (This script or code was created by ccocot - Aldi Nugraha).
 * Tools (Bom Like Target, Bot like 1, Bot like 2, Dell all photo, Fah, Fft auto, Fla auto, Flm auto, Unfoll all, Unfoll not follback).
@@ -45,12 +45,14 @@ $ [License](#license)
 <br/>
 
 ## How to install (Default or Basic Usage)
-	* git clone https://github.com/rifirsyad/tools-instagram.git
-	* cd tools-instagram
-	* unzip node_modules.zip
-	* ls
+	$ git clone https://github.com/rifirsyad/tools-instagram.git
+	$ cd tools-instagram
+	$ unzip node_modules.zip
+	$ npm install https://github.com/huttarichard/instagram-private-api
+	$ npm audit fix
+	$ ls
 	* Then select the tool you want to use!
-	* node filename
+	$ node ((filename))
 <br/>
 
 ## Tutorial on PC/LAPTOP [OS]:
@@ -60,85 +62,93 @@ $ [License](#license)
 	* Download File on Github (https://github.com/rifirsyad/tools-instagram.git)
 	* Extract File tools-instagram and enter the folder
 	* Right Click on Mouse, Then Select "Git Bash Here" (Make sure you are in the tools-instagram folder!!!)
-	* Then type: unzip node_modules.zip
+	$ unzip node_modules.zip
+	$ npm install https://github.com/huttarichard/instagram-private-api
+	$ npm audit fix
 	* To View The Contents Of a folder in bash, type: "ls" (without "")
 	* Then select the tool you want to use!
-	* node filename
+	$ node ((filename))
 <br/>
 
 ## Tutorial on Termux [ANDROID]
 	* Install Termux (PlayStore)
 	* Open Termux and Wait for Automatic Install of Termux.
-	* pkg install git
-	* pkg install nodejs
-	* git clone https://github.com/rifirsyad/tools-instagram.git
-	* cd tools-instagram
-	* unzip node_modules.zip
-	* ls
-	* Then select the tool you want to use!
-	* node filename
+	$ pkg install git
+	$ pkg install nodejs
+	$ git clone https://github.com/rifirsyad/tools-instagram.git
+	$ cd tools-instagram
+	$ unzip node_modules.zip
+	$ npm install https://github.com/huttarichard/instagram-private-api
+	$ npm audit fix
+	$ ls
+	$ Then select the tool you want to use!
+	$ node ((filename))
 <br/>
 
 ## Tutorial on CodeAnywhere / VPS [WEB VERSION] (Centos):
-	* sudo yum -y update
-	* sudo yum -y install git
-	* sudo yum -y install unzip
-	* sudo yum -y install screen
-	* curl --silent --location https://rpm.nodesource.com/setup_10.x | sudo bash -
-	* sudo yum -y install nodejs
+	$ sudo yum -y update
+	$ sudo yum -y install git
+	$ sudo yum -y install unzip
+	$ sudo yum -y install screen
+	$ curl --silent --location https://rpm.nodesource.com/setup_10.x | sudo bash -
+	$ sudo yum -y install nodejs
 	
 	=========== Basic Usage ==============
-	* git clone https://github.com/rifirsyad/tools-instagram.git
-	* cd tools-instagram
-	* unzip node_modules.zip
-	* ls
+	$ git clone https://github.com/rifirsyad/tools-instagram.git
+	$ cd tools-instagram
+	$ unzip node_modules.zip
+	$ npm install https://github.com/huttarichard/instagram-private-api
+	$ npm audit fix
+	$ ls
 	* Then select the tool you want to use!
-	* node filename
+	$ node ((filename))
 	
 	
 	Kita buat session dulu ya!
-	* screen -S Instagram1 (Instagram1 = Nama Session)
+	$ screen -S Instagram1 (Instagram1 = Nama Session)
 	
 	Keluar dari session
-	* CTRL + A + D
+	$ CTRL + A + D
 	
 	Jika ingin mngecek prosesnya / kembali ke session Instagram1
-	* screen -r Instagram1
+	$ screen -r Instagram1
 	
 	Kita buat session baru dulu ya!
-	* screen -S Instagram2 (Instagram2 = Nama Session Baru)
+	$ screen -S Instagram2 (Instagram2 = Nama Session Baru)
 	
 	Keluar dari session
-	* CTRL + A + D
+	$ CTRL + A + D
 	
 	Jika ingin mngecek prosesnya / kembali ke session Instagram2
-	* screen -r Instagram2
+	$ screen -r Instagram2
 	
 	Cara memberhentikan/stop tools
-	* screen -S Instagram1 -X kill (Instagram1 = Nama Session yang ingin di berhentikan)
+	$ screen -S Instagram1 -X kill (Instagram1 = Nama Session yang ingin di berhentikan)
 	
 	Untuk melihat list session yang sedang berjalan
-	* screen -list
+	$ screen -list
 <br/>
 
 ## Tutorial on C9.io / VPS [WEB VERSION] (Ubuntu & Debian):
-	* sudo apt update
-	* sudo apt install git
-	* sudo apt install unzip
-	* sudo apt install screen
-	* sudo apt install build-essential libssl-dev
-	* curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash
-	* source ~/.bashrc
-	* nvm install 10.7.0
+	$ sudo apt update
+	$ sudo apt install git
+	$ sudo apt install unzip
+	$ sudo apt install screen
+	$ sudo apt install build-essential libssl-dev
+	$ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash
+	$ source ~/.bashrc
+	$ nvm install 10.7.0
 	
 	=========== Basic Usage ==============
-	* git clone https://github.com/rifirsyad/tools-instagram.git
-	* cd tools-instagram
-	* unzip node_modules.zip
-	* nvm use 10.7.0
-	* ls
+	$ git clone https://github.com/rifirsyad/tools-instagram.git
+	$ cd tools-instagram
+	$ unzip node_modules.zip
+	$ npm install https://github.com/huttarichard/instagram-private-api
+	$ npm audit fix
+	$ nvm use 10.7.0
+	$ ls
 	* Then select the tool you want to use!
-	* node filename
+	$ node ((filename))
 	* untuk buat session sama seperti VPS Centos
 <br/>
 
