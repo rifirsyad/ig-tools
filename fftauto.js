@@ -1,3 +1,9 @@
+'use strict'
+
+// Recode by officialputuid
+// Last modified by I Putu Jaya Adi Pranata (officialputuid) on March 30, 2019
+// fb|ig|twitter|gplus|line|github|behance|medium? officialputuid & https://officialputu.id
+
 const Client = require('instagram-private-api').V1;
 const delay = require('delay');
 const chalk = require('chalk');
@@ -10,7 +16,7 @@ const User = [
 {
   type:'input',
   name:'username',
-  message:'[>] Insert Username:',
+  message:'Insert Username:',
   validate: function(value){
     if(!value) return 'Can\'t Empty';
     return true;
@@ -19,7 +25,7 @@ const User = [
 {
   type:'password',
   name:'password',
-  message:'[>] Insert Password:',
+  message:'Insert Password:',
   mask:'*',
   validate: function(value){
     if(!value) return 'Can\'t Empty';
@@ -29,7 +35,7 @@ const User = [
 {
   type:'input',
   name:'target',
-  message:'[>] Insert Username Target (Without @[at]):',
+  message:'Insert Username Target (Without @[at]):',
   validate: function(value){
     if(!value) return 'Can\'t Empty';
     return true;
@@ -38,7 +44,7 @@ const User = [
 {
   type:'input',
   name:'text',
-  message:'[>] Insert Text Comment (Use [|] if more than 1):',
+  message:'Insert Text Comment (Use [|] if more than 1):',
   validate: function(value){
     if(!value) return 'Can\'t Empty';
     return true;
@@ -46,8 +52,8 @@ const User = [
 },
 {
   type:'input',
-  name:'mysyntx',
-  message:'[>] Input Total of Target You Want (ITTYW):',
+  name:'ittyw',
+  message:'Input Total of Target You Want (ITTYW):',
   validate: function(value){
     value = value.match(/[0-9]/);
     if (value) return true;
@@ -57,7 +63,7 @@ const User = [
 {
   type:'input',
   name:'sleep',
-  message:'[>] Insert Sleep (MiliSeconds):',
+  message:'Insert Sleep (In MiliSeconds):',
   validate: function(value){
     value = value.match(/[0-9]/);
     if (value) return true;
@@ -153,9 +159,9 @@ const CommentAndLike = async function(session, accountId, text){
     const printFollow = Follow ? chalk`{green Follow}` : chalk`{red Follow}`;
     const printComment = Comment ? chalk`{green Comment}` : chalk`{red Comment}`;
     const printLike = Like ? chalk`{green Like}` : chalk`{red Like}`;
-    return chalk`{bold.green ${printFollow},${printComment},${printLike} [${text}]}`;
+    return chalk`{bold.green ${printFollow}:${printComment}:${printLike} » {bold.cyan ${text}}}`;
   }
-  return chalk`{bold.cyan Timeline Kosong (SKIPPED)}`
+  return chalk`{cyan {bold.red (SKIPPED)} TIMELINE EMPTY!}`
 };
 
 const Followers = async function(session, id){
@@ -177,21 +183,22 @@ const Followers = async function(session, id){
   }
 }
 
-const Excute = async function(User, TargetUsername, Text, Sleep, mysyntx){
+const Excute = async function(User, TargetUsername, Text, Sleep, ittyw){
   try {
-    console.log(chalk`{yellow \n [?] Try to Login . . .}`)
+    console.log(chalk`{yellow \n? Try to Login . . .}`)
     const doLogin = await Login(User);
-    console.log(chalk`{green  [!] Login Succsess, }{yellow [?] Try To Get ID & Followers Target . . .}`)
+    console.log(chalk`{green ✓ Login Succsess. }{yellow ? Try To Get ID & Followers Target . . .}`)
     const getTarget = await Target(TargetUsername);
-    console.log(chalk`{green  [!] ${TargetUsername}: [${getTarget.id}] | Followers: [${getTarget.followers}]}`)
+    console.log(chalk`{green ✓ UserID ${TargetUsername}»${getTarget.id} ϟ Total Followers: [${getTarget.followers}]}`)
     const getFollowers = await Followers(doLogin.session, doLogin.account.id)
-    console.log(chalk`{cyan  [?] Try to Follow, Comment, and Like Followers Target . . . \n}`)
+    console.log(chalk`{cyan ? Try to Follow, Comment, and Like Followers Target . . . \n}`)
     const Targetfeed = new Client.Feed.AccountFollowers(doLogin.session, getTarget.id);
     var TargetCursor;
+    console.log(chalk`{yellow ≡ READY TO START FFTAUTO WITH RATIO ${ittyw} TARGET/${Sleep} MiliSeconds\n}`)
     do {
       if (TargetCursor) Targetfeed.setCursor(TargetCursor);
       var TargetResult = await Targetfeed.get();
-      TargetResult = _.chunk(TargetResult, mysyntx);
+      TargetResult = _.chunk(TargetResult, ittyw);
       for (let i = 0; i < TargetResult.length; i++) {
         var timeNow = new Date();
         timeNow = `${timeNow.getHours()}:${timeNow.getMinutes()}:${timeNow.getSeconds()}`
@@ -199,45 +206,32 @@ const Excute = async function(User, TargetUsername, Text, Sleep, mysyntx){
           if (!getFollowers.includes(akun.id) && akun.params.isPrivate === false) {
             var ranText = Text[Math.floor(Math.random() * Text.length)];
             const ngeDo = await CommentAndLike(doLogin.session, akun.id, ranText)
-            console.log(chalk`[{magenta ${timeNow}}] {bold.green [>]}${akun.params.username} => ${ngeDo}`)
+            console.log(chalk`{magenta ⌭ ${timeNow}}: ${akun.params.username} ➾ ${ngeDo}`)
           } else {
-            console.log(chalk`[{magenta ${timeNow}}] {bold.yellow [SKIPPED]}${akun.params.username} => PRIVATE OR ALREADY FOLLOWED`)
+            console.log(chalk`{magenta ⌭ ${timeNow}}: ${akun.params.username} ➾ {bold.red SKIPPED} ➾ PRIVATE/FOLLOWED!`)
           }
         }));
-        console.log(chalk`{yellow \n [#][>] Delay For ${Sleep} MiliSeconds [<][#] \n}`);
+        console.log(chalk`{yellow \nϟ Current Account: {bold.green ${User.username}} » Delay: ${ittyw}/${Sleep}ms\n}`);
         await delay(Sleep);
       }
       TargetCursor = await Targetfeed.getCursor();
-      console.log(chalk`{yellow \n [#][>] Delay For ${Sleep} MiliSeconds [<][#] \n}`);
+      console.log(chalk`{yellow \nϟ Current Account: {bold.green ${User.username}} » Delay: ${ittyw}/${Sleep}ms\n}`);
       await delay(Sleep);
     } while(Targetfeed.isMoreAvailable());
   } catch (err) {
     console.log(err);
   }
 }
-
-console.log(chalk`
-  {bold.cyan
-  —————————————————— [INFORMATION] ————————————————————
-
-  [?] {bold.green FFTauto | Using Account/User Target!}
-
-  ——————————————————  [THANKS TO]  ————————————————————
-  [✓] CODE BY CYBER SCREAMER CCOCOT (ccocot@bc0de.net)
-  [✓] FIXING & TESTING BY SYNTAX (@officialputu_id)
-  [✓] CCOCOT.CO | BC0DE.NET | NAONLAH.NET | WingkoColi
-  [✓] SGB TEAM REBORN | Zerobyte.id | ccocot@bc0de.net 
-  —————————————————————————————————————————————————————
-  What's new?
-  1. Input Target/delay Manual (ITTYW)
-  —————————————————————————————————————————————————————}
+console.log(chalk`{bold.cyan
+  Ξ TITLE  : FFT [FOLLOW-LIKE-COMMENT TARGET FOLLOWER]
+  Ξ CODE   : CYBER SCREAMER CCOCOT (ccocot@bc0de.net)
+  Ξ STATUS : {bold.green [+ITTWY]} & {bold.yellow [TESTED]}}
       `);
-
 inquirer.prompt(User)
 .then(answers => {
   var text = answers.text.split('|');
   Excute({
     username:answers.username,
     password:answers.password
-  },answers.target,text,answers.sleep,answers.mysyntx);
+  },answers.target,text,answers.sleep,answers.ittyw);
 })
